@@ -1,0 +1,10 @@
+DataClass\ModerationQueue.class
+DataClass\User.class
+DataClass\Document.class
+DataClass\Catalog.class
+enums\Role.class
+DataClass\CatalogWhiteList.class
+enums\Importance.class
+enums\Permissions.class
+DataClass\DataStorage.class
+DataClass\Version.class
