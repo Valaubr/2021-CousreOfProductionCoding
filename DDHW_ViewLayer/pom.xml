@@ -5,7 +5,6 @@
     <artifactId>DDHW_ViewLayer</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
-    <name>View_Layer</name>
 
     <parent>
         <artifactId>DigitalDesignHomeWork</artifactId>

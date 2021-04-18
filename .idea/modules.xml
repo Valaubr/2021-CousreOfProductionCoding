@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/DigitalDesignSchoolHomeWork.iml" filepath="$PROJECT_DIR$/.idea/DigitalDesignSchoolHomeWork.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DDHW_BusinessLogicLayer/DDHW_BusinessLogicLayer.iml" filepath="$PROJECT_DIR$/DDHW_BusinessLogicLayer/DDHW_BusinessLogicLayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DDHW_DataAccessLayer/DDHW_DataAccessLayer.iml" filepath="$PROJECT_DIR$/DDHW_DataAccessLayer/DDHW_DataAccessLayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DDHW_ServiceLayer/DDHW_ServiceLayer.iml" filepath="$PROJECT_DIR$/DDHW_ServiceLayer/DDHW_ServiceLayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DDHW_ViewLayer/DDHW_ViewLayer.iml" filepath="$PROJECT_DIR$/DDHW_ViewLayer/DDHW_ViewLayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DigitalDesignHomeWork.iml" filepath="$PROJECT_DIR$/DigitalDesignHomeWork.iml" />
     </modules>
   </component>
 </project>

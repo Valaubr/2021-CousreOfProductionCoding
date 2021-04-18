@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public abstract class DataStorage {
     private Long id;
     private String name;
+    private String pathOnDisk;
     private LocalDateTime dateOfCreation;
     private User author;
 }
