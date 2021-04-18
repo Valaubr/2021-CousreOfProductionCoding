@@ -1,8 +1,17 @@
 import DataClass.*;
 import enums.Permissions;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
+@Slf4j
 public class CatalogService {
     private ModerationQueue moderationQueue;
     private CatalogWhiteList catalogWhiteList;
@@ -10,35 +19,43 @@ public class CatalogService {
 
     public void CreateCatalog(User user, String name, Catalog root) {
         if (checkPerm(user) != Permissions.READ) {
-            create();
+            File file = new File(root.getPathOnDisk() + name);
+            file.mkdir();
         }
     }
 
     public void AddDocsToCatalog(User user, List<Document> documents, Catalog root) {
         if (checkPerm(user) == Permissions.READ) {
-            sendToModeration();
+            sendToModeration(documents, root);
         } else {
-            add();
+            add(documents, root);
         }
     }
 
     public void changeCatalogName(User user, Catalog catalog, String name) {
         if (checkPerm(user) == Permissions.MODERATOR) {
-            changeName();
+            changeName(catalog, name);
         }
     }
 
-    private void changeName() {
+    private void changeName(Catalog catalog, String name) {
+        catalog.setName(name);
     }
 
-    private void create() {
+    private void add(List<Document> documents, Catalog root) {
+        documents.forEach(document -> {
+            try {
+                Files.move(Path.of(document.getPathOnDisk()), Path.of(root.getPathOnDisk()));
+            } catch (IOException e) {
+                log.error("Exception with move file:", e);
+            }
+        });
     }
 
-    private void add() {
-    }
-
-    private void sendToModeration() {
-
+    private void sendToModeration(List<Document> documents, Catalog root) {
+        // insert into table
+        moderationQueue.setCatalog(root);
+        moderationQueue.setDocuments(documents);
     }
 
     private Permissions checkPerm(User user) {

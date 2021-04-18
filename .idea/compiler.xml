@@ -7,8 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="DDHW_BusinessLogicLayer" />
-        <module name="DDHW_ServiceLayer" />
         <module name="DDHW_DataAccessLayer" />
+        <module name="DDHW_ServiceLayer" />
         <module name="DDHW_ViewLayer" />
       </profile>
     </annotationProcessing>
@@ -17,7 +17,7 @@
       <module name="DDHW_DataAccessLayer" target="11" />
       <module name="DDHW_ServiceLayer" target="11" />
       <module name="DDHW_ViewLayer" target="11" />
-      <module name="DigitalDesignSchoolHomeWork" target="11" />
+      <module name="DigitalDesignHomeWork" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
