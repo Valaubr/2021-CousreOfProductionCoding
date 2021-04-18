@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
   <groupId>ru.valaubr</groupId>
-  <artifactId>DigitalDesignHomeWork</artifactId>
+  <artifactId>DDHW_DataAccessLayer</artifactId>
   <versioning>
     <versions>
       <version>1.0-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20210418183222</lastUpdated>
+    <lastUpdated>20210418183307</lastUpdated>
   </versioning>
 </metadata>
