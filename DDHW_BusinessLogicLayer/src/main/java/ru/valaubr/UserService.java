@@ -1,6 +1,8 @@
-import models.User;
-import enums.Permissions;
-import enums.Role;
+package ru.valaubr;
+
+import ru.valaubr.models.User;
+import ru.valaubr.enums.Permissions;
+import ru.valaubr.enums.Role;
 
 public class UserService {
     private User user;
@@ -13,8 +15,7 @@ public class UserService {
         return "Token";
     }
 
-    public void createUser(String login, String password, String fName, String lName, String email) {
-        user.setLogin(login);
+    public void createUser(String password, String fName, String lName, String email) {
         user.setPassword(password);
         user.setFName(fName);
         user.setLName(lName);

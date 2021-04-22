@@ -1,7 +1,6 @@
-import ru.valaubr.models.User;
-import ru.valaubr.PermissionService;
-import ru.valaubr.UserService;
+package ru.valaubr;
 
+import ru.valaubr.models.User;
 import java.util.ArrayList;
 import java.util.List;
 

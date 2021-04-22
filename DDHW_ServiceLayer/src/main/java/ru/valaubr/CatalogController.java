@@ -1,4 +1,4 @@
-import ru.valaubr.CatalogService;
+package ru.valaubr;
 
 public class CatalogController {
     private CatalogService catalogService;

@@ -1,17 +1,15 @@
-package models;
+package ru.valaubr.models;
 
-import enums.Role;
+import ru.valaubr.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class User {
-    private Long id;
     private String fName;
     private String lName;
-    private String login;
     private String password;
-    private String Email;
+    private String Email; //Primary-key like login
     private Role role;
 }

@@ -1,6 +1,6 @@
-package models;
+package ru.valaubr.models;
 
-import enums.Permissions;
+import ru.valaubr.enums.Permissions;
 import lombok.Getter;
 import lombok.Setter;
 

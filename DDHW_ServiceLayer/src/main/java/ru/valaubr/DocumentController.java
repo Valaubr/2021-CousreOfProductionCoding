@@ -1,3 +1,5 @@
+package ru.valaubr;
+
 import ru.valaubr.DocumentService;
 
 public class DocumentController {

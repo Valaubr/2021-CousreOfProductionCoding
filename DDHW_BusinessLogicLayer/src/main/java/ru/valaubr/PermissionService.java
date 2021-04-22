@@ -1,10 +1,12 @@
-import models.Catalog;
-import models.CatalogWhiteList;
-import models.Document;
-import models.User;
-import enums.Importance;
-import enums.Permissions;
-import enums.Role;
+package ru.valaubr;
+
+import ru.valaubr.models.Catalog;
+import ru.valaubr.models.CatalogWhiteList;
+import ru.valaubr.models.Document;
+import ru.valaubr.models.User;
+import ru.valaubr.enums.Importance;
+import ru.valaubr.enums.Permissions;
+import ru.valaubr.enums.Role;
 
 public class PermissionService {
     private CatalogWhiteList catalogWhiteList;

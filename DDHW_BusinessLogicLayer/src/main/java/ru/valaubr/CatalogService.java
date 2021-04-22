@@ -1,9 +1,11 @@
-import models.Catalog;
-import models.CatalogWhiteList;
-import models.Document;
-import models.ModerationQueue;
-import models.User;
-import enums.Permissions;
+package ru.valaubr;
+
+import ru.valaubr.models.Catalog;
+import ru.valaubr.models.CatalogWhiteList;
+import ru.valaubr.models.Document;
+import ru.valaubr.models.ModerationQueue;
+import ru.valaubr.models.User;
+import ru.valaubr.enums.Permissions;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -12,7 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-@Slf4j
+@Slf4j(topic = "CatalogService")
 public class CatalogService {
     private ModerationQueue moderationQueue;
     private CatalogWhiteList catalogWhiteList;

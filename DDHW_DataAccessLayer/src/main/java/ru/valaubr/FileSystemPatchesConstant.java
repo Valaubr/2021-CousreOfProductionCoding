@@ -1,4 +1,5 @@
 package ru.valaubr;
 
-public class FileSystemPathesConstant {
+public class FileSystemPatchesConstant {
+    public static final String ROOT_DIR = "C:\\ToTestAService";
 }

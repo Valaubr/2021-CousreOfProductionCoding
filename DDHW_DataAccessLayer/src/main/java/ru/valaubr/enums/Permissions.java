@@ -1,4 +1,4 @@
-package enums;
+package ru.valaubr.enums;
 
 public enum Permissions {
     READ,

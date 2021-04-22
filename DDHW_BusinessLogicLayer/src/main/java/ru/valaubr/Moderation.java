@@ -1,4 +1,6 @@
-import models.Document;
+package ru.valaubr;
+
+import ru.valaubr.models.Document;
 
 public class Moderation {
     public void accept(Document document) {

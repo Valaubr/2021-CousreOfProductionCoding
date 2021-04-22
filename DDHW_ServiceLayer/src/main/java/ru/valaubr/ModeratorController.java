@@ -1,3 +1,5 @@
+package ru.valaubr;
+
 import ru.valaubr.models.Catalog;
 import ru.valaubr.models.Document;
 import ru.valaubr.models.ModerationQueue;

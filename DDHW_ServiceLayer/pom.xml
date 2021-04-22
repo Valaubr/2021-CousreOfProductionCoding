@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>DigitalDesignHomeWork</artifactId>
+        <artifactId>digital-design-home-work</artifactId>
         <groupId>ru.valaubr</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>DDHW_ServiceLayer</artifactId>
+    <artifactId>ddhw-service-layer</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -19,8 +19,20 @@
     <dependencies>
         <dependency>
             <groupId>ru.valaubr</groupId>
-            <artifactId>DDHW_DataAccessLayer</artifactId>
+            <artifactId>ddhw-business-logic-layer</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
         </dependency>
     </dependencies>
 

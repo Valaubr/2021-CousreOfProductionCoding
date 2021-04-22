@@ -1,4 +1,4 @@
-import ru.valaubr.UserService;
+package ru.valaubr;
 
 public class SecurityController {
     private UserService userService;
