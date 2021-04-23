@@ -20,7 +20,7 @@ class CatalogTest {
 
     @Test
     public void createCatalogTest() {
-        catalog.createCatalog(1L, "wabudiDabuday", new User(), "/");
+        catalog.createCatalog(null, "wabudiDabuday", new User());
     }
 
     @Test
