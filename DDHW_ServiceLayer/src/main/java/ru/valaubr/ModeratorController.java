@@ -1,10 +1,8 @@
 package ru.valaubr;
 
-import ru.valaubr.models.Catalog;
-import ru.valaubr.models.Document;
+import ru.valaubr.DAO.CatalogDAO;
+import ru.valaubr.DAO.DocumentDAO;
 import ru.valaubr.models.ModerationQueue;
-import ru.valaubr.Moderation;
-import ru.valaubr.UserService;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +16,7 @@ public class ModeratorController {
         //userService.checkPerm(User);
     }
 
-    public Map<Catalog, List<Document>> getQueue() {
+    public Map<CatalogDAO, List<DocumentDAO>> getQueue() {
         return null;
     }
 

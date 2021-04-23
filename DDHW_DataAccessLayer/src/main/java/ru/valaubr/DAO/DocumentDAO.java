@@ -1,30 +1,21 @@
-package ru.valaubr.models;
+package ru.valaubr.DAO;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
-import ru.valaubr.DAO.DocumentDAO;
+import ru.valaubr.DAOinterfaces.DocumentDAOInterface;
 import ru.valaubr.enums.Importance;
+import ru.valaubr.models.DataStorage;
+import ru.valaubr.models.Document;
+import ru.valaubr.models.User;
 import ru.valaubr.sql_work.ConnectionPool;
-import ru.valaubr.sql_work.DBConnectionInfo;
 import ru.valaubr.sql_work.SQLQueries;
 
 import java.sql.*;
 import java.time.LocalDate;
 
-@Getter
-@Setter
 @Slf4j
-public class Document extends DataStorage implements DocumentDAO {
-    //private List<File> files;
-    private String description;
-    private Importance importance;
-    private Integer version;
-    private Long oldVersion;
-
+public class DocumentDAO extends DataStorage implements DocumentDAOInterface {
     @Override
-    public void createDoc(Long parentID, String name, User author, String linkOnDisk, String description, Importance importance) {
+    public boolean createDoc(Long parentID, String name, User author, String linkOnDisk, String description, Importance importance) {
         try {
             Connection connection = ConnectionPool.getConnection();
             connection.setAutoCommit(false);
@@ -40,9 +31,8 @@ public class Document extends DataStorage implements DocumentDAO {
             statement.setString(5, author.getEmail());
             statement.setBoolean(6, false);
             statement.execute();
-            connection.commit();
             statement = connection.prepareStatement("select * from data_storage where PARENT_ID is null " +
-                    "and name = ? and folder = false or PARENT_ID = ? and name = ? and folder = false");
+                    "and name = ? and folder = false or PARENT_ID = ? and name = ? and folder = false order by id ASC");
             if (parentID != null) {
                 statement.setLong(2, parentID);
             } else {
@@ -51,7 +41,6 @@ public class Document extends DataStorage implements DocumentDAO {
             statement.setString(1, name);
             statement.setString(3, name);
             ResultSet resultSet = statement.executeQuery();
-            connection.commit();
             resultSet.next();
 
             statement = connection.prepareStatement("insert into document values(?,?,?,?,?)");
@@ -65,20 +54,20 @@ public class Document extends DataStorage implements DocumentDAO {
             statement.close();
             connection.commit();
             connection.setAutoCommit(true);
+            return true;
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         }
+        return false;
     }
 
     @Override
-    public void updateDoc(Long id, String name, String linkOnDisk, String description, Importance importance) {
+    public boolean updateDoc(Long id, String name, String linkOnDisk, String description, Importance importance) {
         try {
             Connection connection = ConnectionPool.getConnection();
-            connection.setAutoCommit(false);
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM data_storage AS ds LEFT JOIN document AS doc ON ds.id = doc.data_storage where id = ?");
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
-            connection.commit();
             rs.next();
             statement = connection.prepareStatement(SQLQueries.INSERT_DATA_STORAGE);
             if (rs.getLong("parent_id") != 0) {
@@ -95,8 +84,9 @@ public class Document extends DataStorage implements DocumentDAO {
                 statement.setNull(5, Types.NULL);
             }
             statement.setBoolean(6, false);
+
             statement.execute();
-            connection.commit();
+
             statement = connection.prepareStatement("select * from data_storage where PARENT_ID is null " +
                     "and name = ? and folder = false or PARENT_ID = ? and name = ? and folder = false order by id asc");
             if (rs.getLong("parent_id") != 0) {
@@ -104,11 +94,10 @@ public class Document extends DataStorage implements DocumentDAO {
             } else {
                 statement.setNull(2, Types.NULL);
             }
-            statement.setString(1, rs.getString("name"));
-            statement.setString(3, rs.getString("name"));
+            statement.setString(1, name);
+            statement.setString(3, name);
             ResultSet rs1 = statement.executeQuery();
             rs1.next();
-            connection.commit();
             statement = connection.prepareStatement("insert into document values(?,?,?,?,?)");
             statement.setLong(1, rs1.getLong("id"));
             statement.setString(2, description);
@@ -116,14 +105,14 @@ public class Document extends DataStorage implements DocumentDAO {
             statement.setInt(4, rs.getInt("version") + 1);
             statement.setInt(5, rs.getInt("id"));
             statement.execute();
-            connection.commit();
-            connection.setAutoCommit(true);
             rs.close();
             rs1.close();
             statement.close();
+            return true;
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         }
+        return false;
     }
 
     public Document getDoc(Long id) {

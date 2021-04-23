@@ -1,12 +1,11 @@
-package ru.valaubr.models;
+package ru.valaubr.DAO;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
-import ru.valaubr.DAO.CatalogDAO;
+import ru.valaubr.DAOinterfaces.CatalogDAOInterface;
+import ru.valaubr.models.Document;
+import ru.valaubr.models.User;
 import ru.valaubr.sql_work.ConnectionPool;
-import ru.valaubr.sql_work.DBConnectionInfo;
 import ru.valaubr.sql_work.SQLQueries;
 
 import java.sql.*;
@@ -14,15 +13,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
 @Slf4j
-public class Catalog extends DataStorage implements CatalogDAO {
+public class CatalogDAO implements CatalogDAOInterface {
     static {
         try {
             Class.forName("org.h2.Driver");
         } catch (ClassNotFoundException e) {
-            LoggerFactory.getLogger(Catalog.class).error(e.getMessage(), e);
+            LoggerFactory.getLogger(CatalogDAO.class).error(e.getMessage(), e);
         }
     }
 
