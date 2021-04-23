@@ -1,5 +1,6 @@
 package ru.valaubr.models;
 
+import ru.valaubr.DAO.CatalogDAO;
 import ru.valaubr.enums.Permissions;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +10,6 @@ import lombok.Setter;
 public class CatalogWhiteList {
     private Long id;
     private User user;
-    private Catalog catalog;
+    private CatalogDAO catalogDAO;
     private Permissions permissions;
 }

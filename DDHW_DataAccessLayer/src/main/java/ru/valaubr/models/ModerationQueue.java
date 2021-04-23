@@ -2,6 +2,8 @@ package ru.valaubr.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.valaubr.DAO.CatalogDAO;
+import ru.valaubr.DAO.DocumentDAO;
 
 import java.util.List;
 
@@ -9,6 +11,6 @@ import java.util.List;
 @Setter
 public class ModerationQueue {
     private Long id;
-    private Catalog catalog;
-    private List<Document> documents;
+    private CatalogDAO catalogDAO;
+    private List<DocumentDAO> documentDAOS;
 }

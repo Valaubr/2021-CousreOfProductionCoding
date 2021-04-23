@@ -1,13 +1,13 @@
 package ru.valaubr;
 
-import ru.valaubr.models.Document;
+import ru.valaubr.DAO.DocumentDAO;
 
 public class Moderation {
-    public void accept(Document document) {
+    public void accept(DocumentDAO documentDAO) {
 
     }
 
-    public void reject(Document document) {
+    public void reject(DocumentDAO documentDAO) {
 
     }
 }

@@ -54,9 +54,7 @@
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <configuration>
-                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>
-                    <changeLogDirectory>src/main/resources/</changeLogDirectory>
-                    <changeLogFile>schema.xml</changeLogFile>
+                    <!--  -->
                 </configuration>
             </plugin>
         </plugins>

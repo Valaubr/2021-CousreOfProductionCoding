@@ -1,25 +1,28 @@
 package ru.valaubr.models;
 
 import org.junit.jupiter.api.Test;
+import ru.valaubr.DAO.DocumentDAO;
 import ru.valaubr.enums.Importance;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DocumentTest {
-    Document document = new Document();
+class DocumentDAOTest {
+    DocumentDAO documentDAO = new DocumentDAO();
 
     @Test
     void getDoc() {
-        assertNotNull(document.getDoc(4L));
+        //если через этот метод попробовать получить каталог то
+        //отвалится с исключением NPE
+        assertNotNull(documentDAO.getDoc(3L));
     }
 
     @Test
     void createDoc() {
-        document.createDoc(null, "nmae", new User(), "/path/", "descr", Importance.LOW);
+        assertTrue(documentDAO.createDoc(null, "nmae", new User(), "/path/", "descr", Importance.LOW));
     }
 
     @Test
     void updateDoc() {
-        document.updateDoc(4l, "Normal_name", "/normal_link", "This is a document", Importance.LOW);
+        assertTrue(documentDAO.updateDoc(4l, "Normal_name", "/normal_link", "This is a documentDAO", Importance.LOW));
     }
 }

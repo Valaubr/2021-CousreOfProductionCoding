@@ -1,12 +1,13 @@
 package ru.valaubr;
 
+import ru.valaubr.DAO.DocumentDAO;
 import ru.valaubr.models.Document;
 
 public class DocumentService {
-    private Document document;
+    private DocumentDAO documentDAO;
 
-    public Document get() {
-        return new Document();
+    public Document get(Long id) {
+        return documentDAO.getDoc(id);
     }
 
     public void update() {

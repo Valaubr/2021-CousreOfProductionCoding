@@ -10,6 +10,7 @@ import java.util.Date;
 @Setter
 public abstract class DataStorage {
     private Long id;
+    private Long parentId;
     private String name;
     private String pathOnDisk;
     private Date dateOfCreation;
