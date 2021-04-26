@@ -1,6 +1,5 @@
-package ru.valaubr.sql_work;
+package ru.valaubr.services.sqlHelpers;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

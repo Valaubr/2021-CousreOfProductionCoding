@@ -1,8 +1,8 @@
 package ru.valaubr;
 
-import ru.valaubr.DAO.CatalogDAO;
+import ru.valaubr.dao.Impl.CatalogDaoImpl;
 import ru.valaubr.models.CatalogWhiteList;
-import ru.valaubr.DAO.DocumentDAO;
+import ru.valaubr.dao.Impl.DocumentDaoImpl;
 import ru.valaubr.models.User;
 import ru.valaubr.enums.Importance;
 import ru.valaubr.enums.Permissions;
@@ -10,13 +10,13 @@ import ru.valaubr.enums.Role;
 
 public class PermissionService {
     private CatalogWhiteList catalogWhiteList;
-    private DocumentDAO documentDAO;
+    private DocumentDaoImpl documentDaoImpl;
 
-    public void setCatalogPermToUser(User user, CatalogDAO catalogDAO, Permissions permissions) {
+    public void setCatalogPermToUser(User user, CatalogDaoImpl catalogDaoImpl, Permissions permissions) {
 
     }
 
-    public void changeDocImportance(DocumentDAO documentDAO, Importance importance) {
+    public void changeDocImportance(DocumentDaoImpl documentDaoImpl, Importance importance) {
 
     }
 

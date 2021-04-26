@@ -1,6 +1,4 @@
-package ru.valaubr;
-
-import ru.valaubr.DocumentService;
+package ru.valaubr.services;
 
 public class DocumentController {
     private DocumentService documentService;

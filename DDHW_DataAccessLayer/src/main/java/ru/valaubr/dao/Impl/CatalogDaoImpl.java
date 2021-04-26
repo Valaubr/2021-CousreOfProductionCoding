@@ -1,12 +1,11 @@
-package ru.valaubr.DAO;
+package ru.valaubr.services.dao.Impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
-import ru.valaubr.DAOinterfaces.CatalogDAOInterface;
-import ru.valaubr.models.Document;
-import ru.valaubr.models.User;
-import ru.valaubr.sql_work.ConnectionPool;
-import ru.valaubr.sql_work.SQLQueries;
+import ru.valaubr.services.dao.CatalogDao;
+import ru.valaubr.services.models.Document;
+import ru.valaubr.services.models.User;
+import ru.valaubr.services.sqlHelpers.ConnectionPool;
+import ru.valaubr.services.sqlHelpers.SQLQueries;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -14,36 +13,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class CatalogDAO implements CatalogDAOInterface {
-    static {
-        try {
-            Class.forName("org.h2.Driver");
-        } catch (ClassNotFoundException e) {
-            LoggerFactory.getLogger(CatalogDAO.class).error(e.getMessage(), e);
-        }
-    }
+public class CatalogDaoImpl implements CatalogDao {
+    private static final String CLOSE_ERROR = "Don`t close connection";
+    private final ConnectionPool connectionPool = ConnectionPool.getPool();
 
     @Override
     public List<Document> getAll(Long parentID) {
+        Connection connection = connectionPool.getConnection();
+        PreparedStatement statement;
+        ResultSet resultSet;
+        ResultSet userSet;
         try {
-            Connection connection = ConnectionPool.getConnection();
-            PreparedStatement statement;
             if (parentID != null) {
-                statement = connection.prepareStatement("select * from data_storage where parent_id = ? order by creation_date");
+                statement = connection.prepareStatement(SQLQueries.SELECT_FROM_DS_BY_PID);
                 statement.setLong(1, parentID);
             } else {
-                statement = connection.prepareStatement("select * from data_storage where parent_id = null order by creation_date");
+                statement = connection.prepareStatement(SQLQueries.SELECT_FROM_DS_BY_PID_ISNULL);
             }
-            ResultSet resultSet = statement.executeQuery();
-            ResultSet userSet;
+            resultSet = statement.executeQuery();
             List<Document> arr = new ArrayList<>();
             while (resultSet.next()) {
-//                statement = connection.prepareStatement("select * from user where user = ?");
-//                statement.setString(1, resultSet.getString(3));
-//                userSet = statement.executeQuery();
+                statement = connection.prepareStatement(SQLQueries.SELECT_USER);
+                statement.setString(1, resultSet.getString("author"));
+                userSet = statement.executeQuery();
+                userSet.next();
                 User user = new User();
-                //Todo write user
-
+                if (userSet.wasNull()) {
+                    user.setEmail(userSet.getString("EMAIL"));
+                }
                 Document document = new Document();
                 document.setId(resultSet.getLong(1));
                 document.setName(resultSet.getString(3));
@@ -55,22 +52,30 @@ public class CatalogDAO implements CatalogDAOInterface {
             return arr;
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                log.error(CLOSE_ERROR, e);
+            }
         }
         return null;
     }
 
     @Override
     public void createCatalog(Long parentID, String name, User author) {
+        Connection connection = connectionPool.getConnection();
+        PreparedStatement statement;
+        ResultSet rs;
         try {
-            Connection connection = ConnectionPool.getConnection();
             connection.setAutoCommit(false);
-            PreparedStatement statement = connection.prepareStatement("select * from data_storage where id = ?");
+            statement = connection.prepareStatement(SQLQueries.SELECT_FROM_DS);
             if (parentID != null) {
                 statement.setLong(1, parentID);
             } else {
                 statement.setNull(1, Types.NULL);
             }
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
             connection.commit();
             rs.next();
             statement = connection.prepareStatement(SQLQueries.INSERT_DATA_STORAGE);
@@ -90,20 +95,32 @@ public class CatalogDAO implements CatalogDAOInterface {
             connection.setAutoCommit(true);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                log.error(CLOSE_ERROR, e);
+            }
         }
     }
 
     @Override
     public void updateCatalog(Long id, String name, String linkOnDisk) {
+        Connection connection = connectionPool.getConnection();
         try {
-            Connection connection = ConnectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement("UPDATE data_storage SET NAME = ?, link_on_disk = ? where id = ? ");
+            PreparedStatement statement = connection.prepareStatement(SQLQueries.UPDATE_DS);
             statement.setString(1, name);
             statement.setString(2, linkOnDisk);
             statement.setLong(3, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                log.error(CLOSE_ERROR, e);
+            }
         }
     }
 }

@@ -1,8 +1,8 @@
-package ru.valaubr.models;
+package ru.valaubr.services.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.valaubr.enums.Importance;
+import ru.valaubr.services.enums.Importance;
 
 @Getter
 @Setter

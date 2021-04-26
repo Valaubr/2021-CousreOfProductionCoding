@@ -1,6 +1,6 @@
-package ru.valaubr.models;
+package ru.valaubr.services.models;
 
-import ru.valaubr.enums.Role;
+import ru.valaubr.services.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,4 +1,4 @@
-package ru.valaubr.enums;
+package ru.valaubr.services.enums;
 
 public enum Importance {
     HIGH,

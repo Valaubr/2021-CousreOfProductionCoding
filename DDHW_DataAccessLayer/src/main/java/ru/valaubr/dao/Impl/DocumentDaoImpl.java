@@ -1,23 +1,25 @@
-package ru.valaubr.DAO;
+package ru.valaubr.services.dao.Impl;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.valaubr.DAOinterfaces.DocumentDAOInterface;
-import ru.valaubr.enums.Importance;
-import ru.valaubr.models.DataStorage;
-import ru.valaubr.models.Document;
-import ru.valaubr.models.User;
-import ru.valaubr.sql_work.ConnectionPool;
-import ru.valaubr.sql_work.SQLQueries;
+import ru.valaubr.services.dao.DocumentDao;
+import ru.valaubr.services.enums.Importance;
+import ru.valaubr.services.models.DataStorage;
+import ru.valaubr.services.models.Document;
+import ru.valaubr.services.models.User;
+import ru.valaubr.services.sqlHelpers.ConnectionPool;
+import ru.valaubr.services.sqlHelpers.SQLQueries;
 
 import java.sql.*;
 import java.time.LocalDate;
 
 @Slf4j
-public class DocumentDAO extends DataStorage implements DocumentDAOInterface {
+public class DocumentDaoImpl extends DataStorage implements DocumentDao {
+    private final ConnectionPool connectionPool = ConnectionPool.getPool();
+
     @Override
     public boolean createDoc(Long parentID, String name, User author, String linkOnDisk, String description, Importance importance) {
         try {
-            Connection connection = ConnectionPool.getConnection();
+            Connection connection = connectionPool.getConnection();
             connection.setAutoCommit(false);
             PreparedStatement statement = connection.prepareStatement(SQLQueries.INSERT_DATA_STORAGE);
             if (parentID != null) {
@@ -31,19 +33,18 @@ public class DocumentDAO extends DataStorage implements DocumentDAOInterface {
             statement.setString(5, author.getEmail());
             statement.setBoolean(6, false);
             statement.execute();
-            statement = connection.prepareStatement("select * from data_storage where PARENT_ID is null " +
-                    "and name = ? and folder = false or PARENT_ID = ? and name = ? and folder = false order by id ASC");
+            statement = connection.prepareStatement(SQLQueries.SELECT_FROM_DS_BY_PID_NAME);
             if (parentID != null) {
-                statement.setLong(2, parentID);
+                statement.setLong(1, parentID);
             } else {
-                statement.setNull(2, Types.NULL);
+                statement.setNull(1, Types.NULL);
             }
-            statement.setString(1, name);
+            statement.setString(2, name);
             statement.setString(3, name);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
 
-            statement = connection.prepareStatement("insert into document values(?,?,?,?,?)");
+            statement = connection.prepareStatement(SQLQueries.INSERT_DOC);
             statement.setLong(1, resultSet.getLong(1));
             statement.setString(2, description);
             statement.setString(3, importance.toString());
@@ -64,8 +65,8 @@ public class DocumentDAO extends DataStorage implements DocumentDAOInterface {
     @Override
     public boolean updateDoc(Long id, String name, String linkOnDisk, String description, Importance importance) {
         try {
-            Connection connection = ConnectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM data_storage AS ds LEFT JOIN document AS doc ON ds.id = doc.data_storage where id = ?");
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement statement = connection.prepareStatement(SQLQueries.GET_DOC_BY_ID);
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
             rs.next();
@@ -87,18 +88,16 @@ public class DocumentDAO extends DataStorage implements DocumentDAOInterface {
 
             statement.execute();
 
-            statement = connection.prepareStatement("select * from data_storage where PARENT_ID is null " +
-                    "and name = ? and folder = false or PARENT_ID = ? and name = ? and folder = false order by id asc");
+            statement = connection.prepareStatement(SQLQueries.SELECT_FROM_DS_BY_PID_NAME);
             if (rs.getLong("parent_id") != 0) {
-                statement.setLong(2, rs.getLong("parent_id"));
+                statement.setLong(1, rs.getLong("parent_id"));
             } else {
-                statement.setNull(2, Types.NULL);
+                statement.setNull(1, Types.NULL);
             }
-            statement.setString(1, name);
-            statement.setString(3, name);
+            statement.setString(2, name);
             ResultSet rs1 = statement.executeQuery();
             rs1.next();
-            statement = connection.prepareStatement("insert into document values(?,?,?,?,?)");
+            statement = connection.prepareStatement(SQLQueries.INSERT_DOC);
             statement.setLong(1, rs1.getLong("id"));
             statement.setString(2, description);
             statement.setString(3, importance.toString());
@@ -116,9 +115,9 @@ public class DocumentDAO extends DataStorage implements DocumentDAOInterface {
     }
 
     public Document getDoc(Long id) {
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = connectionPool.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM data_storage AS ds LEFT JOIN document AS doc ON ds.id = doc.data_storage where id = ?");
+            PreparedStatement statement = connection.prepareStatement(SQLQueries.GET_DOC_BY_ID);
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
             rs.next();
