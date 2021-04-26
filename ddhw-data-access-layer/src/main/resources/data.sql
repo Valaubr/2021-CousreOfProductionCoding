@@ -1,0 +1,15 @@
+insert into role values ('ADMINISTRATOR');
+insert into role values ('USER');
+insert into permissions values('READ');
+insert into permissions values('WRITE');
+insert into permissions values('MODERATOR');
+insert into importance values('LOW');
+insert into importance values('NORMAL');
+insert into importance values('HIGH');
+insert into user values('nmail', 'pass', 'Ilya', 'pa pa pa', 'ADMINISTRATOR');
+insert into data_storage (parent_id, name, creation_date, link_on_disk, author, folder) values(null, 'First catalog', '2021-04-22', '~/', 'nmail', true);
+insert into data_storage (parent_id, name, creation_date, link_on_disk, author, folder) values(null, 'nmae', '2021-04-13', '~/', 'nmail', true);
+insert into data_storage (parent_id, name, creation_date, link_on_disk, author, folder) values(1, 'First document', '2021-04-13', '~/First catalog/', 'nmail', false);
+insert into data_storage (parent_id, name, creation_date, link_on_disk, author, folder) values(1, 'nmae', '2021-04-22', '~/First catalog/', 'nmail', false);
+insert into document values(3, 'first document. it`s cool but why?', 'LOW', '1', null);
+insert into document values(4, 'it`s nmae document, why i did it? id dont understend...', 'HIGH', '1', null);
