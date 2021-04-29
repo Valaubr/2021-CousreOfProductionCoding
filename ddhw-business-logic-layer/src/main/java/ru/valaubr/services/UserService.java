@@ -1,9 +1,11 @@
-package ru.valaubr.servicelayer.services;
+package ru.valaubr.services;
 
-import ru.valaubr.servicelayer.models.User;
-import ru.valaubr.servicelayer.enums.Permissions;
-import ru.valaubr.servicelayer.enums.Role;
+import org.springframework.stereotype.Service;
+import ru.valaubr.enums.Permissions;
+import ru.valaubr.enums.Role;
+import ru.valaubr.models.User;
 
+@Service
 public class UserService {
     private User user;
 

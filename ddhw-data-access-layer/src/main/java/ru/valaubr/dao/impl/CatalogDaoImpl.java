@@ -1,11 +1,13 @@
-package ru.valaubr.servicelayer.dao.Impl;
+package ru.valaubr.dao.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.valaubr.servicelayer.dao.CatalogDao;
-import ru.valaubr.servicelayer.models.Document;
-import ru.valaubr.servicelayer.models.User;
-import ru.valaubr.servicelayer.sqlHelpers.ConnectionPool;
-import ru.valaubr.servicelayer.sqlHelpers.SQLQueries;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import ru.valaubr.dao.CatalogDao;
+import ru.valaubr.models.Document;
+import ru.valaubr.models.User;
+import ru.valaubr.sqlhelpers.ConnectionPool;
+import ru.valaubr.sqlhelpers.SQLQueries;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -13,16 +15,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@Repository
 public class CatalogDaoImpl implements CatalogDao {
     private static final String CLOSE_ERROR = "Don`t close connection";
-    private final ConnectionPool connectionPool = ConnectionPool.getPool();
+    @Autowired
+    private ConnectionPool connectionPool;
 
     @Override
     public List<Document> getAll(Long parentID) {
-        Connection connection = connectionPool.getConnection();
         PreparedStatement statement;
         ResultSet resultSet;
         ResultSet userSet;
+        Connection connection = connectionPool.getConnection();
         try {
             if (parentID != null) {
                 statement = connection.prepareStatement(SQLQueries.SELECT_FROM_DS_BY_PID);
@@ -63,7 +67,7 @@ public class CatalogDaoImpl implements CatalogDao {
     }
 
     @Override
-    public void createCatalog(Long parentID, String name, User author) {
+    public boolean createCatalog(Long parentID, String name, User author) {
         Connection connection = connectionPool.getConnection();
         PreparedStatement statement;
         ResultSet rs;
@@ -79,7 +83,7 @@ public class CatalogDaoImpl implements CatalogDao {
             connection.commit();
             rs.next();
             statement = connection.prepareStatement(SQLQueries.INSERT_DATA_STORAGE);
-            if (!rs.wasNull()) {
+            if (rs.wasNull()) {
                 statement.setNull(1, Types.NULL);
                 statement.setString(4, "/");
             } else {
@@ -93,6 +97,7 @@ public class CatalogDaoImpl implements CatalogDao {
             statement.execute();
             connection.commit();
             connection.setAutoCommit(true);
+            return true;
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         } finally {
@@ -102,10 +107,11 @@ public class CatalogDaoImpl implements CatalogDao {
                 log.error(CLOSE_ERROR, e);
             }
         }
+        return false;
     }
 
     @Override
-    public void updateCatalog(Long id, String name, String linkOnDisk) {
+    public boolean updateCatalog(Long id, String name, String linkOnDisk) {
         Connection connection = connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(SQLQueries.UPDATE_DS);
@@ -113,6 +119,7 @@ public class CatalogDaoImpl implements CatalogDao {
             statement.setString(2, linkOnDisk);
             statement.setLong(3, id);
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         } finally {
@@ -122,5 +129,6 @@ public class CatalogDaoImpl implements CatalogDao {
                 log.error(CLOSE_ERROR, e);
             }
         }
+        return false;
     }
 }

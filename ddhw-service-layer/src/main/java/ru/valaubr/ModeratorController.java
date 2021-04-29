@@ -1,13 +1,15 @@
-package ru.valaubr.servicelayer;
+package ru.valaubr;
 
 
-import ru.valaubr.servicelayer.models.ModerationQueue;
-import ru.valaubr.servicelayer.services.Moderation;
-import ru.valaubr.servicelayer.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import ru.valaubr.services.Moderation;
+import ru.valaubr.services.UserService;
 
+@Controller
 public class ModeratorController {
+    @Autowired
     private UserService userService;
-    private ModerationQueue moderationQueue;
+    @Autowired
     private Moderation moderation;
-
 }

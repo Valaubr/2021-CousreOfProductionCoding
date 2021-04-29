@@ -1,8 +1,12 @@
-package ru.valaubr.servicelayer;
+package ru.valaubr;
 
-import ru.valaubr.servicelayer.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import ru.valaubr.services.UserService;
 
+@Controller
 public class SecurityController {
+    @Autowired
     private UserService userService;
 
     public String login() {

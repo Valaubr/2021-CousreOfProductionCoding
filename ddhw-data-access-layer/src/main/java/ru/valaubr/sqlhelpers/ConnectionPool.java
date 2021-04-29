@@ -1,12 +1,15 @@
-package ru.valaubr.servicelayer.sqlHelpers;
+package ru.valaubr.sqlhelpers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.h2.jdbcx.JdbcConnectionPool;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 @Slf4j
+@Component
 public class ConnectionPool {
     private static final String DB_DRIVER = "org.h2.Driver";
     private static final String DB_CONNECTION = "jdbc:h2:~/test";
@@ -16,7 +19,7 @@ public class ConnectionPool {
     private static ConnectionPool instance;
     private final JdbcConnectionPool jdbcConnectionPool;
 
-    private ConnectionPool() {
+    public ConnectionPool() {
         try {
             Class.forName(DB_DRIVER);
         } catch (ClassNotFoundException e) {
@@ -25,6 +28,7 @@ public class ConnectionPool {
         jdbcConnectionPool = JdbcConnectionPool.create(DB_CONNECTION, DB_USER, DB_PASSWORD);
     }
 
+    @Bean
     public static synchronized ConnectionPool getPool() {
         if (instance == null) {
             instance = new ConnectionPool();

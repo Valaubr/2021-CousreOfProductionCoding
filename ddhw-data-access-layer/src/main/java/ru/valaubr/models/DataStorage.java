@@ -1,4 +1,4 @@
-package ru.valaubr.servicelayer.models;
+package ru.valaubr.models;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public abstract class DataStorage {
+public class DataStorage {
     private Long id;
     private Long parentId;
     private String name;

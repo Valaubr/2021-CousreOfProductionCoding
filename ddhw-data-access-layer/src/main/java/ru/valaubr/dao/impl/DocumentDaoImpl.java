@@ -1,25 +1,32 @@
-package ru.valaubr.servicelayer.dao.Impl;
+package ru.valaubr.dao.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.valaubr.servicelayer.dao.DocumentDao;
-import ru.valaubr.servicelayer.enums.Importance;
-import ru.valaubr.servicelayer.models.DataStorage;
-import ru.valaubr.servicelayer.models.Document;
-import ru.valaubr.servicelayer.models.User;
-import ru.valaubr.servicelayer.sqlHelpers.ConnectionPool;
-import ru.valaubr.servicelayer.sqlHelpers.SQLQueries;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import ru.valaubr.dao.DocumentDao;
+import ru.valaubr.enums.Importance;
+import ru.valaubr.models.DataStorage;
+import ru.valaubr.models.Document;
+import ru.valaubr.models.User;
+import ru.valaubr.sqlhelpers.ConnectionPool;
+import ru.valaubr.sqlhelpers.SQLQueries;
 
 import java.sql.*;
 import java.time.LocalDate;
 
 @Slf4j
+@Repository
 public class DocumentDaoImpl extends DataStorage implements DocumentDao {
-    private final ConnectionPool connectionPool = ConnectionPool.getPool();
+    private static final String CLOSE_ERROR = "Don`t close connection";
+    @Autowired
+    private ConnectionPool connectionPool;
 
     @Override
     public boolean createDoc(Long parentID, String name, User author, String linkOnDisk, String description, Importance importance) {
+        Connection connection = connectionPool.getConnection();
         try {
-            Connection connection = connectionPool.getConnection();
             connection.setAutoCommit(false);
             PreparedStatement statement = connection.prepareStatement(SQLQueries.INSERT_DATA_STORAGE);
             if (parentID != null) {
@@ -58,14 +65,20 @@ public class DocumentDaoImpl extends DataStorage implements DocumentDao {
             return true;
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                log.error(CLOSE_ERROR, e);
+            }
         }
         return false;
     }
 
     @Override
     public boolean updateDoc(Long id, String name, String linkOnDisk, String description, Importance importance) {
+        Connection connection = connectionPool.getConnection();
         try {
-            Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(SQLQueries.GET_DOC_BY_ID);
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
@@ -95,6 +108,7 @@ public class DocumentDaoImpl extends DataStorage implements DocumentDao {
                 statement.setNull(1, Types.NULL);
             }
             statement.setString(2, name);
+            statement.setString(3, name);
             ResultSet rs1 = statement.executeQuery();
             rs1.next();
             statement = connection.prepareStatement(SQLQueries.INSERT_DOC);
@@ -110,6 +124,12 @@ public class DocumentDaoImpl extends DataStorage implements DocumentDao {
             return true;
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                log.error(CLOSE_ERROR, e);
+            }
         }
         return false;
     }
@@ -135,6 +155,12 @@ public class DocumentDaoImpl extends DataStorage implements DocumentDao {
             return doc;
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                log.error(CLOSE_ERROR, e);
+            }
         }
         return null;
     }

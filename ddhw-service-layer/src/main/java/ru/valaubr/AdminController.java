@@ -1,14 +1,19 @@
-package ru.valaubr.servicelayer;
+package ru.valaubr;
 
-import ru.valaubr.servicelayer.models.User;
-import ru.valaubr.servicelayer.services.PermissionService;
-import ru.valaubr.servicelayer.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import ru.valaubr.models.User;
+import ru.valaubr.services.PermissionService;
+import ru.valaubr.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Controller
 public class AdminController {
+    @Autowired
     private UserService userService;
+    @Autowired
     private PermissionService permissionService;
 
     public List<User> getAllUser() {

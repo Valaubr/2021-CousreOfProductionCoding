@@ -1,10 +1,11 @@
-package ru.valaubr.servicelayer.models;
+package ru.valaubr.models;
 
 import org.junit.jupiter.api.Test;
-import ru.valaubr.servicelayer.dao.Impl.DocumentDaoImpl;
-import ru.valaubr.servicelayer.enums.Importance;
+import ru.valaubr.dao.impl.DocumentDaoImpl;
+import ru.valaubr.enums.Importance;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DocumentDaoImplTest {
     DocumentDaoImpl documentDaoImpl = new DocumentDaoImpl();

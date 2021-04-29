@@ -1,7 +1,9 @@
-package ru.valaubr.servicelayer;
+package ru.valaubr;
 
-import ru.valaubr.servicelayer.models.User;
+import org.springframework.stereotype.Service;
+import ru.valaubr.models.User;
 
+@Service
 public class SMTPWorker {
     public void sendMessage(User author) {
 

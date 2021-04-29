@@ -1,14 +1,16 @@
-package ru.valaubr.servicelayer.models;
+package ru.valaubr.models;
 
 import org.junit.jupiter.api.Test;
-import ru.valaubr.servicelayer.dao.Impl.CatalogDaoImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import ru.valaubr.dao.impl.CatalogDaoImpl;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CatalogDaoImplTest {
-    CatalogDaoImpl catalogDaoImpl = new CatalogDaoImpl();
+    @Autowired
+    CatalogDaoImpl catalogDaoImpl;
 
     @Test
     public void getAllTest() {

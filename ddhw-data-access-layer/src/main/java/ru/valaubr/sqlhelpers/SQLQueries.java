@@ -1,5 +1,8 @@
-package ru.valaubr.servicelayer.sqlHelpers;
+package ru.valaubr.sqlhelpers;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class SQLQueries {
     public static final String INSERT_DATA_STORAGE = "insert into data_storage (PARENT_ID ,NAME ,CREATION_DATE ,LINK_ON_DISK ,AUTHOR ,FOLDER) values(?,?,?,?,?,?)";
     public static final String GET_DOC_BY_ID = "SELECT * FROM data_storage AS ds LEFT JOIN document AS doc ON ds.id = doc.data_storage where id = ?";
