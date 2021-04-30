@@ -1,12 +1,14 @@
-package ru.valaubr.servicelayer.dao;
+package ru.valaubr.dao;
 
-import ru.valaubr.servicelayer.models.Document;
-import ru.valaubr.servicelayer.models.User;
+import ru.valaubr.models.Document;
+import ru.valaubr.models.User;
 
 import java.util.List;
 
 public interface CatalogDao {
     List<Document> getAll(Long parenID);
-    void createCatalog(Long parentID, String name, User author);
-    void updateCatalog(Long id, String name, String linkOnDisk);
+
+    boolean createCatalog(Long parentID, String name, User author);
+
+    boolean updateCatalog(Long id, String name, String linkOnDisk);
 }

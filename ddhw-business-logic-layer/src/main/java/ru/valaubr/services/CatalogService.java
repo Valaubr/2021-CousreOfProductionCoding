@@ -1,31 +1,38 @@
-package ru.valaubr.servicelayer.services;
+package ru.valaubr.services;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
-import ru.valaubr.servicelayer.dao.CatalogDao;
-import ru.valaubr.servicelayer.dao.DocumentDao;
-import ru.valaubr.servicelayer.dao.Impl.CatalogDaoImpl;
-import ru.valaubr.servicelayer.enums.Permissions;
-import ru.valaubr.servicelayer.models.CatalogWhiteList;
-import ru.valaubr.servicelayer.models.Document;
-import ru.valaubr.servicelayer.models.ModerationQueue;
-import ru.valaubr.servicelayer.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.valaubr.dao.CatalogDao;
+import ru.valaubr.dao.DocumentDao;
+import ru.valaubr.enums.Permissions;
+import ru.valaubr.models.User;
 
 import java.util.List;
 
-@Slf4j(topic = "CatalogService")
+@Slf4j
+@Service
 public class CatalogService {
-    private ModerationQueue moderationQueue;
-    private CatalogWhiteList catalogWhiteList;
-    private CatalogDaoImpl catalogDaoImpl = new CatalogDaoImpl();
+    @Autowired
+    private CatalogDao catalogDaoImpl;
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public List<Document> getCatalogData(Long id) {
-        return catalogDaoImpl.getAll(id);
+    public String getCatalogData(Long id) {
+        return gson.toJson(catalogDaoImpl.getAll(id));
     }
 
     public void createCatalog(Long parantID, User user, String name) {
-        if (checkPerm(user) != Permissions.READ) {
+        //if (checkPerm(user) != Permissions.READ) {
             catalogDaoImpl.createCatalog(parantID, name, user);
-        }
+        //}
+    }
+
+    public void updateCatalog(Long id, String name, String linkOnDisk) {
+        //if (checkPerm(user) != Permissions.READ) {
+        catalogDaoImpl.updateCatalog(id, name, linkOnDisk);
+        //}
     }
 
     public void addDocsToCatalog(User user, List<DocumentDao> documentDAOS, CatalogDao root) {
@@ -35,9 +42,9 @@ public class CatalogService {
     }
 
     public void changeCatalogConfig(Long id, String name, String linkOnDisk, User user) {
-        if (checkPerm(user) == Permissions.MODERATOR) {
+        //if (checkPerm(user) == Permissions.MODERATOR) {
             catalogDaoImpl.updateCatalog(id, name, linkOnDisk);
-        }
+        //}
     }
 
     private void sendToModeration(List<DocumentDao> documentDao, CatalogDao root) {
@@ -48,6 +55,7 @@ public class CatalogService {
 
     private Permissions checkPerm(User user) {
         //"select permissions from catalogWhiteList where user = " + user;
-        return catalogWhiteList.getPermissions();
+        //return catalogWhiteList.getPermissions();
+        return null;
     }
 }

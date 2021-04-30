@@ -1,12 +1,14 @@
-package ru.valaubr.servicelayer;
+package ru.valaubr;
 
 import org.junit.jupiter.api.Test;
-import ru.valaubr.servicelayer.services.CatalogService;
+import ru.valaubr.services.CatalogService;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class CatalogServiceTest {
     CatalogService catalogService = new CatalogService();
     @Test
     public void test() {
-        catalogService.getCatalogData(1L).forEach(System.out::println);
+        assertNotNull(catalogService.getCatalogData(1L));
     }
 }

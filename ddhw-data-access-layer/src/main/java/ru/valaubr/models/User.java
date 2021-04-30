@@ -1,8 +1,8 @@
-package ru.valaubr.servicelayer.models;
+package ru.valaubr.models;
 
-import ru.valaubr.servicelayer.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
+import ru.valaubr.enums.Role;
 
 @Getter
 @Setter

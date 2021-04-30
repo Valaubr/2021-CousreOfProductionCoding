@@ -6,11 +6,11 @@
 
     <servlet>
         <servlet-name>catalog</servlet-name>
-        <servlet-class>ru.valaubr.servicelayer.CatalogController</servlet-class>
+        <servlet-class>ru.valaubr.CatalogController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>document</servlet-name>
-        <servlet-class>ru.valaubr.servicelayer.DocumentController</servlet-class>
+        <servlet-class>ru.valaubr.DocumentController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -22,4 +22,16 @@
         <servlet-name>document</servlet-name>
         <url-pattern>/document</url-pattern>
     </servlet-mapping>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:app-context.xml
+        </param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
 </web-app>

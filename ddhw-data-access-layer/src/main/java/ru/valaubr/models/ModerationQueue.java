@@ -1,9 +1,8 @@
-package ru.valaubr.servicelayer.models;
+package ru.valaubr.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.valaubr.servicelayer.dao.Impl.CatalogDaoImpl;
-import ru.valaubr.servicelayer.dao.Impl.DocumentDaoImpl;
+import ru.valaubr.dao.impl.DocumentDaoImpl;
 
 import java.util.List;
 
@@ -11,6 +10,6 @@ import java.util.List;
 @Setter
 public class ModerationQueue {
     private Long id;
-    private CatalogDaoImpl catalogDaoImpl;
+    private DataStorage catalog;
     private List<DocumentDaoImpl> documentDaoImpl;
 }

@@ -1,15 +1,14 @@
-package ru.valaubr.servicelayer.models;
+package ru.valaubr.models;
 
-import ru.valaubr.servicelayer.dao.Impl.CatalogDaoImpl;
-import ru.valaubr.servicelayer.enums.Permissions;
 import lombok.Getter;
 import lombok.Setter;
+import ru.valaubr.enums.Permissions;
 
 @Getter
 @Setter
 public class CatalogWhiteList {
     private Long id;
     private User user;
-    private CatalogDaoImpl catalogDaoImpl;
+    private DataStorage catalog;
     private Permissions permissions;
 }

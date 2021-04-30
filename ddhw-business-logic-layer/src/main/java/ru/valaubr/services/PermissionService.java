@@ -1,14 +1,17 @@
-package ru.valaubr.servicelayer.services;
+package ru.valaubr.services;
 
-import ru.valaubr.servicelayer.dao.Impl.CatalogDaoImpl;
-import ru.valaubr.servicelayer.models.CatalogWhiteList;
-import ru.valaubr.servicelayer.dao.Impl.DocumentDaoImpl;
-import ru.valaubr.servicelayer.models.User;
-import ru.valaubr.servicelayer.enums.Importance;
-import ru.valaubr.servicelayer.enums.Permissions;
-import ru.valaubr.servicelayer.enums.Role;
+import org.springframework.stereotype.Service;
+import ru.valaubr.dao.impl.CatalogDaoImpl;
+import ru.valaubr.dao.impl.DocumentDaoImpl;
+import ru.valaubr.enums.Importance;
+import ru.valaubr.enums.Permissions;
+import ru.valaubr.enums.Role;
+import ru.valaubr.models.CatalogWhiteList;
+import ru.valaubr.models.User;
 
+@Service
 public class PermissionService {
+
     private CatalogWhiteList catalogWhiteList;
     private DocumentDaoImpl documentDaoImpl;
 
