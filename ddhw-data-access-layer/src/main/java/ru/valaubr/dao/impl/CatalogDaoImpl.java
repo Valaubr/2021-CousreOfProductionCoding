@@ -7,11 +7,8 @@ import ru.valaubr.models.DataStorage;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Slf4j
@@ -19,27 +16,29 @@ import java.util.List;
 public class CatalogDaoImpl implements CatalogDao {
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
+    @Transactional
     public List<DataStorage> findAllByParent(Long id) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<DataStorage> query = criteriaBuilder.createQuery(DataStorage.class);
-        Root doc = query.from(DataStorage.class);
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(criteriaBuilder.ge(doc.get("id"), id));
-        return entityManager.createQuery(query.where(predicates.toArray(new Predicate[0]))).getResultList();
+        Query query = entityManager.createQuery("select ds from DataStorage ds where id = :id", DataStorage.class);
+        query.setParameter("id", id);
+        return query.getResultList();
     }
 
     @Override
+    @Transactional
     public void create(DataStorage ds) {
         entityManager.persist(ds);
     }
 
     @Override
+    @Transactional
     public DataStorage update(DataStorage ds) {
         return entityManager.merge(ds);
     }
 
     @Override
+    @Transactional
     public void delete(DataStorage ds) {
         entityManager.remove(ds);
     }

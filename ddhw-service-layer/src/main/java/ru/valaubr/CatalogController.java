@@ -25,7 +25,7 @@ public class CatalogController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter writer = resp.getWriter();
-        Long parent_id = Long.getLong(req.getParameter("catalog_id"));
+        Long parent_id = Long.valueOf(req.getParameter("parent_id"));
         writer.write(catalogService.getCatalogData(parent_id));
         writer.close();
     }
