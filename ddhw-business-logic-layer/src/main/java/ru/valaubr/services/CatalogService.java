@@ -8,54 +8,52 @@ import org.springframework.stereotype.Service;
 import ru.valaubr.dao.CatalogDao;
 import ru.valaubr.dao.DocumentDao;
 import ru.valaubr.enums.Permissions;
-import ru.valaubr.models.User;
+import ru.valaubr.models.DataStorage;
+import ru.valaubr.models.ServiceUser;
 
+import javax.transaction.Transactional;
+import java.io.BufferedReader;
 import java.util.List;
 
 @Slf4j
 @Service
 public class CatalogService {
     @Autowired
-    private CatalogDao catalogDaoImpl;
+    private CatalogDao catalogDao;
+    private DataStorage ds;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    @Transactional
     public String getCatalogData(Long id) {
-        return gson.toJson(catalogDaoImpl.getAll(id));
+        return gson.toJson(catalogDao.findAllByParent(id));
     }
 
-    public void createCatalog(Long parantID, User user, String name) {
-        //if (checkPerm(user) != Permissions.READ) {
-            catalogDaoImpl.createCatalog(parantID, name, user);
-        //}
+    public void createCatalog(BufferedReader br) {
+        DataStorage ds = gson.fromJson(br, DataStorage.class);
+        catalogDao.create(ds);
+
     }
 
-    public void updateCatalog(Long id, String name, String linkOnDisk) {
-        //if (checkPerm(user) != Permissions.READ) {
-        catalogDaoImpl.updateCatalog(id, name, linkOnDisk);
-        //}
+    public void updateCatalog(BufferedReader br) {
+        DataStorage ds = gson.fromJson(br, DataStorage.class);
+        catalogDao.update(ds);
     }
 
-    public void addDocsToCatalog(User user, List<DocumentDao> documentDAOS, CatalogDao root) {
-        if (checkPerm(user) == Permissions.READ) {
-            sendToModeration(documentDAOS, root);
-        }
+    public void deleteCatalog(BufferedReader br) {
+        DataStorage ds = gson.fromJson(br, DataStorage.class);
+        catalogDao.delete(ds);
     }
 
-    public void changeCatalogConfig(Long id, String name, String linkOnDisk, User user) {
-        //if (checkPerm(user) == Permissions.MODERATOR) {
-            catalogDaoImpl.updateCatalog(id, name, linkOnDisk);
-        //}
+    public void addDocsToCatalog(ServiceUser serviceUser, List<DocumentDao> documentDAOS, CatalogDao root) {
+    }
+
+    public void changeCatalogConfig(Long id, String name, String linkOnDisk, ServiceUser serviceUser) {
     }
 
     private void sendToModeration(List<DocumentDao> documentDao, CatalogDao root) {
-//         insert into table
-//        moderationQueue.setCatalogDaoImpl(root);
-//        moderationQueue.setDocumentDaoImpl(documentDao);
     }
 
-    private Permissions checkPerm(User user) {
-        //"select permissions from catalogWhiteList where user = " + user;
-        //return catalogWhiteList.getPermissions();
+    private Permissions checkPerm(ServiceUser serviceUser) {
         return null;
     }
 }

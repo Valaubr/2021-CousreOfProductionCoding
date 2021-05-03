@@ -23,7 +23,7 @@ class CatalogDaoImplTest {
 
     @Test
     public void createCatalogTest() {
-        catalogDaoImpl.createCatalog(null, "wabudiDabuday", new User());
+        catalogDaoImpl.createCatalog(null, "wabudiDabuday", new ServiceUser());
     }
 
     @Test

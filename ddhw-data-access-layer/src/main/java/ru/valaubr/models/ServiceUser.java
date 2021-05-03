@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @Entity
-public class User {
+public class ServiceUser {
     private String fName;
     private String lName;
     private String password;

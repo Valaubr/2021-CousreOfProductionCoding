@@ -19,7 +19,7 @@ class DocumentDaoImplTest {
 
     @Test
     void createDoc() {
-        assertTrue(documentDaoImpl.createDoc(null, "nmae", new User(), "/path/", "descr", Importance.LOW));
+        assertTrue(documentDaoImpl.createDoc(null, "nmae", new ServiceUser(), "/path/", "descr", Importance.LOW));
     }
 
     @Test

@@ -73,7 +73,7 @@ Caused by: java.lang.IllegalStateException: The file is locked: nio:C:/Users/Val
 	... 58 more
 2021-04-25 17:36:27 ERROR [main] 
 org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Неверное имя пользователя или пароль
-Wrong user name or password [28000-200]
+Wrong serviceUser name or password [28000-200]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:461)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
 	at org.h2.message.DbException.get(DbException.java:205)

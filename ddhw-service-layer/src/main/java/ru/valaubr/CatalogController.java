@@ -3,7 +3,7 @@ package ru.valaubr;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import ru.valaubr.holder.AppContextHolder;
-import ru.valaubr.models.User;
+import ru.valaubr.models.ServiceUser;
 import ru.valaubr.services.CatalogService;
 
 import javax.servlet.ServletException;
@@ -32,22 +32,11 @@ public class CatalogController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getContentType();
-        JsonObject jsonObject = gson.fromJson(req.getReader(), JsonObject.class);
-        long id = jsonObject.getAsJsonPrimitive("parent_id").getAsLong();
-        User author = new User();
-        author.setEmail(jsonObject.getAsJsonPrimitive("author").getAsString());
-        String name = jsonObject.getAsJsonPrimitive("name").getAsString();
-        catalogService.createCatalog(id, author, name);
+        catalogService.createCatalog(req.getReader());
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getContentType();
-        JsonObject jsonObject = gson.fromJson(req.getReader(), JsonObject.class);
-        long id = jsonObject.getAsJsonPrimitive("id").getAsLong();
-        String link = jsonObject.getAsJsonPrimitive("name").getAsString();
-        String name = jsonObject.getAsJsonPrimitive("link").getAsString();
-        catalogService.updateCatalog(id, name, link);
+        catalogService.updateCatalog(req.getReader());
     }
 }
