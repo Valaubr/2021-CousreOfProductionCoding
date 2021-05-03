@@ -7,7 +7,7 @@ import ru.valaubr.enums.Importance;
 import ru.valaubr.enums.Permissions;
 import ru.valaubr.enums.Role;
 import ru.valaubr.models.CatalogWhiteList;
-import ru.valaubr.models.User;
+import ru.valaubr.models.ServiceUser;
 
 @Service
 public class PermissionService {
@@ -15,7 +15,7 @@ public class PermissionService {
     private CatalogWhiteList catalogWhiteList;
     private DocumentDaoImpl documentDaoImpl;
 
-    public void setCatalogPermToUser(User user, CatalogDaoImpl catalogDaoImpl, Permissions permissions) {
+    public void setCatalogPermToUser(ServiceUser serviceUser, CatalogDaoImpl catalogDaoImpl, Permissions permissions) {
 
     }
 
@@ -23,7 +23,7 @@ public class PermissionService {
 
     }
 
-    public void changeUserRole(User user, Role role) {
+    public void changeUserRole(ServiceUser serviceUser, Role role) {
 
     }
 }
