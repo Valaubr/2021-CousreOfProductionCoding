@@ -19,7 +19,7 @@ public class DataStorage {
     private String pathOnDisk;
     @Temporal(TemporalType.DATE)
     private Date dateOfCreation;
-    @OneToOne
+    @ManyToOne(optional = false)
     private ServiceUser author;
     private boolean isFolder;
 }

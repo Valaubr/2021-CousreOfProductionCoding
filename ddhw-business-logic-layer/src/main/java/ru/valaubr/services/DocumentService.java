@@ -4,30 +4,26 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.valaubr.dao.DocumentDao;
-import ru.valaubr.models.Document;
+import ru.valaubr.dto.DocumentDto;
+import ru.valaubr.jpa.DocumentRepo;
 
 import java.io.BufferedReader;
 
 @Service
 public class DocumentService {
     @Autowired
-    private DocumentDao documentDao;
-    private Document doc;
+    private DocumentRepo documentRepo;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public Document getDoc(Long id) {
-        return documentDao.findById(id);
+    public DocumentDto getDoc(Long id) {
+        return new DocumentDto(documentRepo.findById(id));
     }
 
-    public Document updateDoc(BufferedReader br) {
-        doc = gson.fromJson(br, Document.class);
-        return documentDao.update(doc);
+    public boolean updateDoc(BufferedReader br) {
+        return false;
     }
 
     public void createDoc(BufferedReader br) {
-        doc = gson.fromJson(br, Document.class);
-        documentDao.create(doc);
     }
 
     public void CopyDoc() {

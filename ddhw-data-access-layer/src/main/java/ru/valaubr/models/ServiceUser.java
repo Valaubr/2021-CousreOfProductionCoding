@@ -4,10 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.valaubr.enums.Role;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,7 +16,8 @@ public class ServiceUser {
     private String lName;
     private String password;
     @Id
-    private String Email; //Primary-key like login
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private String email; //Primary-key like login
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Authority> role = new HashSet<>();
 }

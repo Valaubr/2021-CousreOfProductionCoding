@@ -17,10 +17,9 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan(basePackages = "ru.valaubr")
-@EnableTransactionManagement
 public class AccessLayerSpringConfig {
     @Bean
-    public DataSource getDatasource() {
+    public DataSource getDataSource() {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("org.h2.Driver");
         config.setUsername("sa");
@@ -33,7 +32,7 @@ public class AccessLayerSpringConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(getDatasource());
+        em.setDataSource(getDataSource());
         em.setPackagesToScan("ru.valaubr.models");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

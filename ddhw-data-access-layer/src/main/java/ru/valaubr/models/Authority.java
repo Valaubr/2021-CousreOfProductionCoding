@@ -2,22 +2,17 @@ package ru.valaubr.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.valaubr.enums.Permissions;
+import ru.valaubr.enums.Role;
 
 import javax.persistence.*;
-import java.util.List;
 
+@Entity
 @Getter
 @Setter
-@Entity
-public class CatalogWhiteList {
+public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
-    private ServiceUser serviceUser;
-    @OneToOne
-    private DataStorage catalog;
     @Enumerated(EnumType.STRING)
-    private Permissions permissions;
+    private Role name;
 }

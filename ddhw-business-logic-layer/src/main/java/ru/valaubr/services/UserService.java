@@ -9,21 +9,7 @@ import ru.valaubr.models.ServiceUser;
 public class UserService {
     private ServiceUser serviceUser;
 
-    public ServiceUser findByLogin(String login) {
-        return null;
-    }
-
-    public String findByLogPass() {
-        return "Token";
-    }
-
     public void createUser(String password, String fName, String lName, String email) {
-        serviceUser.setPassword(password);
-        serviceUser.setFName(fName);
-        serviceUser.setLName(lName);
-        serviceUser.setEmail(email);
-        serviceUser.setRole(Role.USER);
-        //serviceUser.save();
     }
 
     public Permissions checkPerm() {

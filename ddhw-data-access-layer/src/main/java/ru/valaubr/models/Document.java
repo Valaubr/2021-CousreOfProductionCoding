@@ -2,6 +2,7 @@ package ru.valaubr.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.valaubr.enums.FileTypesWhiteList;
 import ru.valaubr.enums.Importance;
 
 import javax.persistence.*;
@@ -11,10 +12,13 @@ import javax.persistence.*;
 @Entity
 @Table
 public class Document extends DataStorage {
+    @ManyToOne
+    private DataStorage parent;
     private String description;
     @Enumerated(EnumType.STRING)
     private Importance importance;
     private Integer version;
-    @Transient
+    @ManyToOne
     private DataStorage oldVersion;
+    private FileTypesWhiteList fileType;
 }
