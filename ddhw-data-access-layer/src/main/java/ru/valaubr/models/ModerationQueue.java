@@ -13,8 +13,10 @@ public class ModerationQueue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private DataStorage catalog;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Collection<Document> documents;
+    @OneToOne(cascade = CascadeType.ALL)
+    private ServiceUser sender;
 }

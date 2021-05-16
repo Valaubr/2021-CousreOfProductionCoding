@@ -4,56 +4,88 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.valaubr.dao.CatalogDao;
-import ru.valaubr.dao.DocumentDao;
+import ru.valaubr.dto.CatalogDto;
 import ru.valaubr.enums.Permissions;
+import ru.valaubr.enums.Role;
+import ru.valaubr.jpa.CatalogRepo;
+import ru.valaubr.jpa.CatalogWhiteListRepo;
+import ru.valaubr.jpa.ServiceUserRepo;
+import ru.valaubr.models.Catalog;
+import ru.valaubr.models.CatalogWhiteList;
 import ru.valaubr.models.DataStorage;
 import ru.valaubr.models.ServiceUser;
+import ru.valaubr.services.security.JwtProvider;
 
 import javax.transaction.Transactional;
-import java.io.BufferedReader;
+import java.io.File;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class CatalogService {
     @Autowired
-    private CatalogDao catalogDao;
+    private CatalogRepo catalogRepo;
+    @Autowired
+    private ServiceUserRepo user;
+    @Autowired
+    private CatalogWhiteListRepo whiteListRepo;
+    @Autowired
+    private JwtProvider provider;
     private DataStorage ds;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Transactional
-    public String getCatalogData(Long id) {
-        return gson.toJson(catalogDao.findAllByParent(id));
+    public List<CatalogDto> getCatalogData(Long id) {
+        return catalogRepo.findChildlessByParentId(id).stream().map(CatalogDto::new).collect(Collectors.toList());
     }
 
-    public void createCatalog(BufferedReader br) {
-        DataStorage ds = gson.fromJson(br, DataStorage.class);
-        catalogDao.create(ds);
-
+    public ResponseEntity createCatalog(CatalogDto catalogDto, String auth) {
+        auth = provider.getLoginFromToken(auth.substring(7));
+        ServiceUser sr = user.findByEmail(auth);
+        if (catalogDto.getParentId() != null) {
+            if (!checkPerm(sr, catalogDto.getParentId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+            Catalog ds = new Catalog();
+            ds.setName(catalogDto.getName());
+            ds.setDateOfCreation(catalogDto.getDateOfCreation());
+            ds.setParent(catalogRepo.findById(catalogDto.getParentId()).get());
+            ds.setAuthor(sr);
+            createCatalogInFileSystem(catalogDto.getParentId(), catalogDto.getName());
+            catalogRepo.save(ds);
+        }
+        return ResponseEntity.ok().build();
     }
 
-    public void updateCatalog(BufferedReader br) {
-        DataStorage ds = gson.fromJson(br, DataStorage.class);
-        catalogDao.update(ds);
+    public ResponseEntity updateCatalog(CatalogDto catalogDto, String auth) {
+        auth = provider.getLoginFromToken(auth.substring(7));
+        ServiceUser sr = user.findByEmail(auth);
+        if (catalogDto.getId() != null) {
+            if (!checkPerm(sr, catalogDto.getId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+            Catalog ds = catalogRepo.findById(catalogDto.getId()).get();
+            ds.setName(catalogDto.getName());
+            catalogRepo.save(ds);
+        }
+        return ResponseEntity.ok().build();
     }
 
-    public void deleteCatalog(BufferedReader br) {
-        DataStorage ds = gson.fromJson(br, DataStorage.class);
-        catalogDao.delete(ds);
+    private void createCatalogInFileSystem(Long parentId, String name) {
+        DataStorage parent = catalogRepo.findById(parentId).get();
+        new File(parent.getPathOnDisk() + name + "/").mkdir();
     }
 
-    public void addDocsToCatalog(ServiceUser serviceUser, List<DocumentDao> documentDAOS, CatalogDao root) {
-    }
-
-    public void changeCatalogConfig(Long id, String name, String linkOnDisk, ServiceUser serviceUser) {
-    }
-
-    private void sendToModeration(List<DocumentDao> documentDao, CatalogDao root) {
-    }
-
-    private Permissions checkPerm(ServiceUser serviceUser) {
-        return null;
+    private Boolean checkPerm(ServiceUser sr, Long usedId) {
+        CatalogWhiteList a = whiteListRepo.getPermForCatalog(sr.getId(), usedId);
+        if (sr.getRole() == Role.ROLE_ADMINISTRATOR) {
+            return true;
+        } else {
+            return a != null && a.getPermissions() != Permissions.READ;
+        }
     }
 }

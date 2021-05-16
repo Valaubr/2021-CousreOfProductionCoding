@@ -3,26 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee webapp_4_0.xsd"
          version="4.0">
-
-    <servlet>
-        <servlet-name>catalog</servlet-name>
-        <servlet-class>ru.valaubr.CatalogController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>document</servlet-name>
-        <servlet-class>ru.valaubr.DocumentController</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>catalog</servlet-name>
-        <url-pattern>/catalog</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>document</servlet-name>
-        <url-pattern>/document</url-pattern>
-    </servlet-mapping>
-
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
@@ -33,5 +13,10 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
 </web-app>

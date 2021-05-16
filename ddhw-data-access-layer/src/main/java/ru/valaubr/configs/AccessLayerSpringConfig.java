@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -17,10 +18,9 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan(basePackages = "ru.valaubr")
-@EnableTransactionManagement
 public class AccessLayerSpringConfig {
     @Bean
-    public DataSource getDatasource() {
+    public DataSource getDataSource() {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("org.h2.Driver");
         config.setUsername("sa");
@@ -33,8 +33,8 @@ public class AccessLayerSpringConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(getDatasource());
-        em.setPackagesToScan("ru.valaubr.models");
+        em.setDataSource(getDataSource());
+        em.setPackagesToScan("ru.valaubr");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(getProperty());

@@ -1,42 +1,44 @@
 package ru.valaubr;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import ru.valaubr.holder.AppContextHolder;
-import ru.valaubr.models.ServiceUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import ru.valaubr.Helper.RequestGetParamHelper;
+import ru.valaubr.dto.CatalogDto;
 import ru.valaubr.services.CatalogService;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.List;
 
-public class CatalogController extends HttpServlet {
-    private CatalogService catalogService = null;
+@RestController
+@RequestMapping("/api/catalog")
+public class CatalogController {
+    @Autowired
+    private CatalogService service;
     private final Gson gson = new Gson();
+    CatalogDto dto;
+    String auth;
 
-    @Override
-    public void init() throws ServletException {
-        catalogService = AppContextHolder.getAppContext().getBean(CatalogService.class);
+    @GetMapping
+    public List<CatalogDto> getChildrenById(@RequestParam Long id) {
+        return service.getCatalogData(id);
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter writer = resp.getWriter();
-        Long parent_id = Long.valueOf(req.getParameter("parent_id"));
-        writer.write(catalogService.getCatalogData(parent_id));
-        writer.close();
+    @PostMapping
+    public ResponseEntity createCatalog(@RequestHeader HttpHeaders headers, @RequestBody String catalogData) {
+        initDataToThisResponse(catalogData, headers);
+        return service.createCatalog(dto, auth);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        catalogService.createCatalog(req.getReader());
+    @PutMapping
+    public ResponseEntity updateCatalog(@RequestHeader HttpHeaders headers, @RequestBody String catalogData) {
+        initDataToThisResponse(catalogData, headers);
+        return service.updateCatalog(dto, auth);
     }
 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        catalogService.updateCatalog(req.getReader());
+    private void initDataToThisResponse(String metaData, HttpHeaders headers) {
+        dto = gson.fromJson(metaData, CatalogDto.class);
+        auth = RequestGetParamHelper.getAuthToken(headers);
     }
 }

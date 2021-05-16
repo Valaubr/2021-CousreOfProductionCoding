@@ -1,29 +1,35 @@
 package ru.valaubr.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.valaubr.dao.impl.CatalogDaoImpl;
-import ru.valaubr.dao.impl.DocumentDaoImpl;
-import ru.valaubr.enums.Importance;
-import ru.valaubr.enums.Permissions;
-import ru.valaubr.enums.Role;
+import ru.valaubr.dto.CatalogWhiteListDto;
+import ru.valaubr.jpa.CatalogRepo;
+import ru.valaubr.jpa.CatalogWhiteListRepo;
+import ru.valaubr.jpa.ServiceUserRepo;
 import ru.valaubr.models.CatalogWhiteList;
-import ru.valaubr.models.ServiceUser;
 
 @Service
 public class PermissionService {
 
-    private CatalogWhiteList catalogWhiteList;
-    private DocumentDaoImpl documentDaoImpl;
+    @Autowired
+    private CatalogWhiteListRepo repo;
+    @Autowired
+    private CatalogRepo catalogRepo;
+    @Autowired
+    private ServiceUserRepo serviceUserRepo;
 
-    public void setCatalogPermToUser(ServiceUser serviceUser, CatalogDaoImpl catalogDaoImpl, Permissions permissions) {
-
-    }
-
-    public void changeDocImportance(DocumentDaoImpl documentDaoImpl, Importance importance) {
-
-    }
-
-    public void changeUserRole(ServiceUser serviceUser, Role role) {
-
+    public void setCatalogPermToUser(CatalogWhiteListDto catalogWhiteListDto) {
+        CatalogWhiteList permPair = repo.getPermForCatalog(
+                serviceUserRepo.findByEmail(catalogWhiteListDto.getEmail()).getId(),
+                catalogWhiteListDto.getCatalog());
+        if (permPair != null) {
+            permPair.setPermissions(catalogWhiteListDto.getPermissions());
+        } else {
+            permPair = new CatalogWhiteList();
+            permPair.setPermissions(catalogWhiteListDto.getPermissions());
+            permPair.setCatalog(catalogRepo.findById(catalogWhiteListDto.getCatalog()).get());
+            permPair.setServiceUser(serviceUserRepo.findByEmail(catalogWhiteListDto.getEmail()));
+        }
+        repo.save(permPair);
     }
 }
