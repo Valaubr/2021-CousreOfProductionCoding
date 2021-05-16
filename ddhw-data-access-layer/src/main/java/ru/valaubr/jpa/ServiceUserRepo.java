@@ -1,8 +1,10 @@
 package ru.valaubr.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Component;
 import ru.valaubr.models.ServiceUser;
 
-public interface ServiceUserRepo extends JpaRepository<ServiceUser, String> {
-    ServiceUser findByEmail(String email);
+@Component
+public interface ServiceUserRepo extends JpaRepository<ServiceUser, Long> {
+    ServiceUser findByEmail(String token);
 }

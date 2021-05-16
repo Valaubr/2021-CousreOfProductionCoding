@@ -9,6 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class CatalogDto {
+    private Long id;
     private String name;
     private Long parentId;
     private String pathOnDisk;
@@ -16,6 +17,7 @@ public class CatalogDto {
     private String author;
 
     public CatalogDto(DataStorage dataStorage) {
+        id = dataStorage.getId();
         name = dataStorage.getName();
         pathOnDisk = dataStorage.getPathOnDisk();
         dateOfCreation = dataStorage.getDateOfCreation();

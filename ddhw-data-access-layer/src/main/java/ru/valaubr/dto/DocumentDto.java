@@ -12,6 +12,8 @@ import java.util.Optional;
 @Getter
 @Setter
 public class DocumentDto {
+    private Long id;
+    private Long parentId;
     private String name;
     private String pathOnDisk;
     private Date dateOfCreation;
@@ -23,6 +25,8 @@ public class DocumentDto {
     private FileTypesWhiteList fileType;
 
     public DocumentDto(Optional<Document> document) {
+        id = document.get().getId();
+        parentId = document.get().getParentId();
         name = document.get().getName();
         pathOnDisk = document.get().getPathOnDisk();
         dateOfCreation = document.get().getDateOfCreation();
@@ -30,7 +34,9 @@ public class DocumentDto {
         description = document.get().getDescription();
         importance = document.get().getImportance();
         version = document.get().getVersion();
-        //oldVersion = document.get().getOldVersion().getId();
+        if (document.get().getOldVersion() != null) {
+            oldVersion = document.get().getOldVersion().getId();
+        }
         fileType = document.get().getFileType();
     }
 }

@@ -5,7 +5,6 @@ import lombok.Setter;
 import ru.valaubr.enums.Permissions;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
@@ -14,9 +13,9 @@ public class CatalogWhiteList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private ServiceUser serviceUser;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private DataStorage catalog;
     @Enumerated(EnumType.STRING)
     private Permissions permissions;

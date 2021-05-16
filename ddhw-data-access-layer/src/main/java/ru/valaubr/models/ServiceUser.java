@@ -12,12 +12,15 @@ import java.util.Set;
 @Setter
 @Entity
 public class ServiceUser {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String fName;
     private String lName;
     private String password;
-    @Id
-    private String email; //Primary-key like login
+    @Column(unique = true)
+    private String email; //key like login
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Authority> role = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }

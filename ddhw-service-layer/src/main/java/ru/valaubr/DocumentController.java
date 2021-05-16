@@ -2,30 +2,47 @@ package ru.valaubr;
 
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.valaubr.Helper.RequestGetParamHelper;
 import ru.valaubr.dto.DocumentDto;
 import ru.valaubr.services.DocumentService;
 
-import javax.servlet.http.HttpServlet;
 
 @RestController
+@RequestMapping("/api/doc")
 public class DocumentController {
     @Autowired
     private DocumentService documentService;
     private final Gson gson = new Gson();
+    private DocumentDto cd;
+    private String auth;
 
-    @GetMapping("/api/doc")
-    public DocumentDto getById(@RequestParam Long id) {
-        return documentService.getDoc(id);
+    @GetMapping
+    public ResponseEntity getById(@RequestParam Long id) {
+        DocumentDto out = documentService.getDoc(id);
+        if (out != null) {
+            return ResponseEntity.ok().body(out);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @PostMapping("/api/doc")
-    public void createDoc() {
-
+    @PostMapping
+    public ResponseEntity<Object> createDoc(@RequestBody String metaData, @RequestHeader HttpHeaders headers) {
+        initDataToThisResponse(metaData, headers);
+        return documentService.createDoc(cd, auth);
     }
 
-    @PutMapping("/api/doc")
-    public void updateDoc() {
+    @PutMapping
+    public ResponseEntity updateDoc(@RequestBody String metaData, @RequestHeader HttpHeaders headers) {
+        initDataToThisResponse(metaData, headers);
+        return documentService.updateDoc(cd, auth);
+    }
 
+    private void initDataToThisResponse(String metaData, HttpHeaders headers) {
+        cd = gson.fromJson(metaData, DocumentDto.class);
+        auth = RequestGetParamHelper.getAuthToken(headers);
     }
 }
