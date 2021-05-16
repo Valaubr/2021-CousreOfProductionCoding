@@ -5,12 +5,10 @@ import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.valaubr.Helper.RequestGetParamHelper;
-import ru.valaubr.dto.CatalogDto;
+import ru.valaubr.dto.AcceptorDto;
 import ru.valaubr.dto.ModerationQueueDto;
-import ru.valaubr.models.ModerationQueue;
 import ru.valaubr.services.ModerationService;
 import ru.valaubr.services.UserService;
 
@@ -34,14 +32,14 @@ public class ModeratorController {
 
     @PostMapping("/accept")
     public ResponseEntity accept(@RequestHeader HttpHeaders headers, @RequestBody String data) {
-        ModerationQueueDto input = gson.fromJson(data, ModerationQueueDto.class);
+        AcceptorDto input = gson.fromJson(data, AcceptorDto.class);
         auth = RequestGetParamHelper.getAuthToken(headers);
         return moderationService.accept(auth, input);
     }
 
     @PostMapping("/reject")
     public ResponseEntity reject(@RequestHeader HttpHeaders headers, @RequestBody String data) {
-        ModerationQueueDto input = gson.fromJson(data, ModerationQueueDto.class);
+        AcceptorDto input = gson.fromJson(data, AcceptorDto.class);
         auth = RequestGetParamHelper.getAuthToken(headers);
         return moderationService.reject(auth, input);
     }

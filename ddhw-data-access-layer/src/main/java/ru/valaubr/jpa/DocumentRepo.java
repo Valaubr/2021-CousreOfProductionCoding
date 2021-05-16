@@ -10,7 +10,4 @@ import java.util.Optional;
 
 @Repository
 public interface DocumentRepo extends JpaRepository<Document, Long> {
-    @Override
-    @Query("from Document d where d.id = :id")
-    Optional<Document> findById(@Param("id") Long id);
 }

@@ -5,18 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.valaubr.Helper.RequestGetParamHelper;
 import ru.valaubr.dto.DocumentDto;
-import ru.valaubr.enums.FileTypesWhiteList;
 import ru.valaubr.services.DocumentService;
 
 
@@ -25,6 +17,7 @@ import ru.valaubr.services.DocumentService;
 public class DocumentController {
     @Autowired
     private DocumentService documentService;
+
     private final Gson gson = new Gson();
     private DocumentDto cd;
     private String auth;
@@ -39,16 +32,28 @@ public class DocumentController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createDoc(@RequestBody String metaData,
-                                            @RequestHeader HttpHeaders headers) {
-        initDataToThisResponse(metaData, headers);;
-        return documentService.createDoc(cd, auth);
+    public ResponseEntity<Object> createDoc(@RequestParam("file") MultipartFile file,
+                                            @RequestHeader HttpHeaders headers,
+                                            @RequestParam Long parentId,
+                                            @RequestParam String description,
+                                            @RequestParam String importance) {
+        auth = RequestGetParamHelper.getAuthToken(headers);
+        return documentService.createDoc(file, auth, parentId, description, importance);
     }
 
     @PutMapping
-    public ResponseEntity updateDoc(@RequestBody String metaData, @RequestHeader HttpHeaders headers) {
-        initDataToThisResponse(metaData, headers);
-        return documentService.updateDoc(cd, auth);
+    public ResponseEntity updateDoc(@RequestParam("file") MultipartFile file,
+                                    @RequestHeader HttpHeaders headers,
+                                    @RequestParam Long id,
+                                    @RequestParam Long parentId,
+                                    @RequestParam String description,
+                                    @RequestParam String importance) {
+        auth = RequestGetParamHelper.getAuthToken(headers);
+        if (parentId == null) {
+            return documentService.updateDoc(file, auth, id, description, importance);
+        } else {
+            return documentService.updateDocWithMove(file, auth, id, parentId, description, importance);
+        }
     }
 
     private void initDataToThisResponse(String metaData, HttpHeaders headers) {

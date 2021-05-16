@@ -26,7 +26,7 @@ public class DocumentDto {
 
     public DocumentDto(Optional<Document> document) {
         id = document.get().getId();
-        parentId = document.get().getParentId();
+        parentId = document.get().getParent().getId();
         name = document.get().getName();
         pathOnDisk = document.get().getPathOnDisk();
         dateOfCreation = document.get().getDateOfCreation();

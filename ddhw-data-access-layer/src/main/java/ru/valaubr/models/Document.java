@@ -28,12 +28,11 @@ public class Document extends DataStorage {
     }
 
     public Document(Document doc) {
-        this.setParentId(doc.getParentId());
+        this.setParent(doc.getParent());
         this.setName(doc.getName());
         this.setPathOnDisk(doc.getPathOnDisk());
         this.setDateOfCreation(doc.getDateOfCreation());
         this.setAuthor(doc.getAuthor());
-        this.setFolder(false);
         description = doc.getDescription();
         importance = doc.getImportance();
         version = doc.getVersion();

@@ -12,7 +12,7 @@ import java.util.Date;
 @Component
 @Slf4j
 public class JwtProvider {
-    @Value("$(jwt.secret)")
+    @Value("secretKey")
     private String jwtSecret;
 
     public String generateToken(String email) {

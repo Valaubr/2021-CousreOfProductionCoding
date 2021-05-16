@@ -3,6 +3,7 @@ package ru.valaubr.services.security;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
@@ -34,7 +35,9 @@ public class JwtFilter extends GenericFilterBean {
             String userLogin = jwtProvider.getLoginFromToken(token);
             ServiceUserDetails userDetails = userDetailsService.loadUserByUsername(userLogin);
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            SecurityContext newContext = SecurityContextHolder.createEmptyContext();
+            newContext.setAuthentication(auth);
+            SecurityContextHolder.setContext(newContext);
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

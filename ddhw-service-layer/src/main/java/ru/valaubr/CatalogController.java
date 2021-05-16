@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.valaubr.Helper.RequestGetParamHelper;
 import ru.valaubr.dto.CatalogDto;
-import ru.valaubr.dto.DocumentDto;
-import ru.valaubr.models.DataStorage;
 import ru.valaubr.services.CatalogService;
 
 import java.util.List;

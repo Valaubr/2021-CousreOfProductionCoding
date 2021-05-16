@@ -1,0 +1,27 @@
+{
+  "header": {
+    "rulepack_id": "23d22208-e23d-42e2-b01d-ec59d7b83bf0",
+    "enabled": false
+  },
+  "rules": [
+    {
+      "type": "947034909c9b08d0b583170e594b0eb327933231",
+      "model": {
+        "yamlCode": "search:\n  field:\n    anyOf:\n    - annotation:\n        type: org.springframework.beans.factory.annotation.Value\n    - annotation:\n        type: org.springframework.beans.factory.annotation.Autowired\n",
+        "mver": 8,
+        "yamlQuickFixCode": "availableFixes: []\n",
+        "ruleName": "Field injection is not recommended",
+        "ruleID": "7a10a5bd-b7da-4d8d-90ad-4efd983ffa14",
+        "disableRuleIDs": [
+          "96118a3e-cc05-4946-be03-48658503b831"
+        ],
+        "ruleShortDescription": "Field injection is not recommended. A class that takes a required dependency as a constructor argument can only be instantiated if that argument is provided (you should have a guard clause to make sure the argument is not null.) A constructor therefore enforces the dependency requirement whether or not you\u0027re using Spring, making it container-agnostic.",
+        "ruleErrorLevel": 2,
+        "comment": "",
+        "ruleScope": [],
+        "ruleEnabled": true
+      }
+    }
+  ],
+  "generators": []
+}

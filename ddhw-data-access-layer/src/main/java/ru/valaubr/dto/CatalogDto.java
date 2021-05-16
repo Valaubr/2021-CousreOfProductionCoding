@@ -22,6 +22,6 @@ public class CatalogDto {
         pathOnDisk = dataStorage.getPathOnDisk();
         dateOfCreation = dataStorage.getDateOfCreation();
         author = dataStorage.getAuthor().getEmail();
-        parentId = dataStorage.getParentId();
+        parentId = dataStorage.getParent().getId();
     }
 }

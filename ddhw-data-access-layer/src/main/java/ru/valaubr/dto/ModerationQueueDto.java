@@ -5,14 +5,14 @@ import lombok.Setter;
 import ru.valaubr.models.ModerationQueue;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
 public class ModerationQueueDto {
     private Long id;
     private Long catalog;
-    private Collection<DocumentDto> documents;
+    private List<DocumentDto> documents;
     private String sender;
 
     public ModerationQueueDto() {
