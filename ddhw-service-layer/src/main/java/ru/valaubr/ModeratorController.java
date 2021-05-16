@@ -1,6 +1,5 @@
 package ru.valaubr;
 
-
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
