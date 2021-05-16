@@ -11,13 +11,13 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table
+@DiscriminatorValue("Document")
 public class Document extends DataStorage {
     private String description;
     @Enumerated(EnumType.STRING)
     private Importance importance;
     private Integer version;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private DataStorage oldVersion;
     private FileTypesWhiteList fileType;
     private Boolean isActive;
