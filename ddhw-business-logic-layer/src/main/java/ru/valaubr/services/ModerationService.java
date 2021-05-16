@@ -48,7 +48,7 @@ public class ModerationService {
         return out;
     }
 
-    //Я думаю что перемещение не являетсяя модификацией документа по этому не создаю копию документа
+
     public ResponseEntity accept(String auth, AcceptorDto input) {
         auth = provider.getLoginFromToken(auth.substring(7));
         if (checkPerm(auth, input)) {
