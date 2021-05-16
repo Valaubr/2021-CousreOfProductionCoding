@@ -92,8 +92,8 @@ public class ModerationService {
                     return ResponseEntity.ok().build();
                 }
             }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     private boolean checkPerm(String auth, AcceptorDto input) {
